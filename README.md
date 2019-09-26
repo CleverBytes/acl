@@ -1,8 +1,8 @@
 # Acl
 
 ACL or access control list is a list of permissions attached to a specific object for certain users.
-This ACL is designed to be used in a phoneix (Elixir) project and handles all your permissions managment.
- It requires following depedencies
+This ACL is designed to be used in a phoenix (Elixir) project and handles all your permissions management.
+ It requires following dependencies
  
  
  
@@ -23,7 +23,7 @@ This ACL is designed to be used in a phoneix (Elixir) project and handles all yo
 
 ## Installation guide
 
-To add ACL to your project simpley add to your projects depedencies
+To add ACL to your project simply add to your projects dependencies
 
 
 
@@ -45,7 +45,7 @@ you also need to run migrations for acl, which creates tables required for the a
 
 ## ACL guide
 
-it has three essential Componenets Roles,Resources (handles as res), and Rules.
+it has three essential Components Roles,Resources (handles as res), and Rules.
 
 ### Roles
 
@@ -62,7 +62,7 @@ in roles parent is optional and you may choose to provide it or not.
 
 ### Res
 
-Res  are entities you want to give or deny access for. they can be anything real or arbitaray.
+Res  are entities you want to give or deny access for. they can be anything real or arbitrary.
 
 you can add a new res by
 
@@ -91,8 +91,8 @@ and you can check if a role or permission exists by
 
 
 
-valid inputs for permmission are "POST","GET","PUT" ,"DELETE","read","write","delete","edit". permissions have downword flow. i.e if you have defined permissions for a higher operation it automatically assings them permissions for lower operations.
-like "edit" grants permissions for all operations. their heirarchy is in this order
+valid inputs for permission are "POST","GET","PUT" ,"DELETE","read","write","delete","edit". permissions have downward flow. i.e if you have defined permissions for a higher operation it automatically assigns them permissions for lower operations.
+like "edit" grants permissions for all operations. their hierarchy is in this order
 
 
 
@@ -101,7 +101,7 @@ like "edit" grants permissions for all operations. their heirarchy is in this or
 
 
 
-you can use actions argument to define actions for your resources or not use thema t all and skip sending them in arguments. like i have a resource as maps and i can define actions like display/resize etc. now actions can be pages in a web application or can be tables for an api or can be functions inside a controller. you can be as creative as you wish
+you can use actions argument to define actions for your resources or not use them at all and skip sending them in arguments. like i have a resource as maps and i can define actions like display/resize etc. now actions can be pages in a web application or can be tables for an api or can be functions inside a controller. you can be as creative as you wish
 
 and last argument condition is to define permission levels (0,1,2,3), and they map in this order.
 
@@ -114,7 +114,7 @@ and last argument condition is to define permission levels (0,1,2,3), and they m
       
 
 
-you can add a res with empity string and it will be used as super resource. granting permission to that resource is equivalent to making a superadmin and any role who have access to this resource will have all permissions.
+you can add a res with empty string and it will be used as super resource. granting permission to that resource is equivalent to making a super admin and any role who have access to this resource will have all permissions.
 
 
 ##### for issues pls open an issue

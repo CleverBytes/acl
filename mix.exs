@@ -20,8 +20,8 @@ defmodule Acl.MixProject do
 
       # Docs
       name: "ACL",
-      source_url: "https://github.com/Azzy420/ACL",
-      homepage_url: "https://github.com/Azzy420/ACL",
+      source_url: "https://github.com/CleverBytes/acl",
+      homepage_url: "https://github.com/CleverBytes/acl",
       docs: [main: "Acl", # The main page in the docs
         extras: ["README.md"],
                 api_reference: false,

@@ -9,7 +9,7 @@ defmodule Acl.MixProject do
       maintainers: ["Azwar Habib"],
       licenses: ["Apache 2.0"],
       description: "Acl implementation.",
-      links: %{"GitHub" => "https://github.com/Azzy420/ACL"},
+      links: %{"GitHub" => "https://github.com/CleverBytes/acl"},
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -17,8 +17,6 @@ defmodule Acl.MixProject do
       package: package(),
       aliases: aliases(),
       deps: deps(),
-
-      # Docs
       name: "ACL",
       source_url: "https://github.com/CleverBytes/acl",
       homepage_url: "https://github.com/CleverBytes/acl",
@@ -39,7 +37,9 @@ defmodule Acl.MixProject do
       files: ["lib", "mix.exs", "README.md"],
       maintainers: ["Azwar Habib"],
       licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/Azzy420/ACL_"}
+      links: %{"GitHub" => "https://github.com/CleverBytes/acl"},
+      description: "Acl implementation."
+
     ]
   end
   # Configuration for the OTP application.

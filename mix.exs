@@ -61,7 +61,7 @@ defmodule Acl.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, " 3.0"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 1.0.0"},
       {:ex_doc, ">= 0.0.0", only: :dev},

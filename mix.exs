@@ -61,6 +61,7 @@ defmodule Acl.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+    {:phoenix, "~> 1.3"},
     {:ecto_sql, "~> 3.0"},
     {:ecto, "~> 3.3.3"}
     ]

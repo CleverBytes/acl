@@ -61,21 +61,20 @@ defmodule Acl.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-    {:phoenix, "~> 1.3"},
-    {:ecto_sql, "~> 3.0"},
+    {:ecto_sql, "~> 3.3.4"},
     {:ecto, "~> 3.3.3"},
     #{:ecto_sql, "\~> 3.0"},
      # {:jason, "\~> 1.0"},
-      {:cowboy, "~>  2.7.0"},
-     {:plug_cowboy, "~> 1.0.0"},
+      {:cowboy, "~>  2.7.0", override: true},
+     {:plug_cowboy, "~> 2.0"},
       #{:ex_doc, ">= 0.0.0", only: :dev},
       {:phoenix, "~> 1.4.14"},
       #{:phoenix_pubsub, "\~> 1.0"},
       #{:phoenix_ecto, "\~> 3.2"},
-      #{:postgrex, ">= 0.0.0"},
+      {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.13.2"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev}
-      #{:gettext, "\~> 0.11"},
+      {:phoenix_live_reload, "~> 1.0", only: :dev},
+      {:gettext, "\~> 0.11"},
     ]
   end
 

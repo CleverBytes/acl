@@ -62,7 +62,7 @@ defmodule Acl.MixProject do
   defp deps do
     [
     {:ecto_sql, "~> 3.3.4"},
-    {:ecto, "~> 3.3.3"},
+    {:ecto, "~> 3.4.4"},
     #{:ecto_sql, "\~> 3.0"},
      # {:jason, "\~> 1.0"},
       {:cowboy, "~>  2.7.0", override: true},

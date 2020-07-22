@@ -11,7 +11,7 @@ defmodule Acl.Application do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
-      supervisor(Acl.Repo, []),
+#      supervisor(Acl.Repo, []),
       # Start the endpoint when the application starts
       supervisor(AclWeb.Endpoint, []),
       # Start your own worker by calling: Acl.Worker.start_link(arg1, arg2, arg3)

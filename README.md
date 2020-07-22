@@ -31,14 +31,11 @@ To add ACL to your project simply add to your projects dependencies
 
 
 and run "mix deps.get"
-thn you need to add :acl to your application
+then you need to add :acl to your application
 and also add configuration for :acl in your config file
     
     config :acl, Acl.Repo,
-       adapter: Ecto.Adapters.Postgres,
-       username: "user",
-       password: "pass",
-       database: "db",
+       repo: MyApp.Repo
     
 you also need to run migrations for acl, which creates tables required for the acl, you can find migrations inside acl folder in your deps directory.
 

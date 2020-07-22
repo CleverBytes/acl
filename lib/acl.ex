@@ -41,10 +41,7 @@ thn you need to add :acl to your application
 and also add configuration for :acl in your config file
 
     config :acl, Acl.Repo,
-       adapter: Ecto.Adapters.Postgres,
-       username: "user",
-       password: "pass",
-       database: "db",
+       repo: MyApp.Repo
 
 you also need to run migrations for acl, which creates tables required for the acl, you can find migrations inside acl folder in your deps directory.
 
@@ -158,7 +155,7 @@ you can add a res with empity string and it will be used as super resource. gran
 
   def allowAccess( %{__struct__: _} = rule) do
 
-    case RuleController.denyRule(rule) do
+    case RuleController.allowRule(rule) do
       true -> {:ok, :allowed}
       false -> {:error, "rule not found, perhaps create new rule?"}
     end
@@ -167,7 +164,7 @@ you can add a res with empity string and it will be used as super resource. gran
 
   def allowAccess(conn, params) do
 
-    case RuleController.denyRule(params) do
+    case RuleController.allowRule(params) do
       true -> {:ok, :allowed}
       false -> {:error, "rule not found, perhaps create new rule?"}
     end
@@ -177,7 +174,7 @@ you can add a res with empity string and it will be used as super resource. gran
   def denyAccess(conn, %{__struct__: _}  = rule) do
 
     case RuleController.denyRule(rule) do
-      true -> {:ok, :allowed}
+      true -> {:ok, :denied}
       false -> {:error, "rule not found, perhaps create new rule?"}
     end
   end
@@ -186,7 +183,7 @@ you can add a res with empity string and it will be used as super resource. gran
   def denyAccess(conn, params) do
 
     case RuleController.denyRule(params) do
-      true -> {:ok, :allowed}
+      true -> {:ok, :denied}
       false -> {:error, "rule not found, perhaps create new rule?"}
     end
   end

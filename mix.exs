@@ -4,7 +4,7 @@ defmodule Acl.MixProject do
   def project do
     [
       app: :acl,
-      version: "0.4.1",
+      version: "0.4.2",
       elixir: "~> 1.5",
       maintainers: ["Azwar Habib"],
       licenses: ["Apache 2.0"],

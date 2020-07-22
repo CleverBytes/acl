@@ -19,7 +19,7 @@ defmodule Acl.Acl_context do
 
   """
   def list_acl_roles do
-    Repo.all(Role)
+    Repo.repo().all(Role)
   end
 
   @doc """
@@ -36,7 +36,7 @@ defmodule Acl.Acl_context do
       ** (Ecto.NoResultsError)
 
   """
-  def get_role!(id), do: Repo.get!(Role, id)
+  def get_role!(id), do: Repo.repo().get!(Role, id)
 
   @doc """
   Creates a role.
@@ -53,7 +53,7 @@ defmodule Acl.Acl_context do
   def create_role(attrs \\ %{}) do
     %Role{}
     |> Role.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.repo().insert()
   end
 
   @doc """
@@ -71,7 +71,7 @@ defmodule Acl.Acl_context do
   def update_role(%Role{} = role, attrs) do
     role
     |> Role.changeset(attrs)
-    |> Repo.update()
+    |> Repo.repo().update()
   end
 
   @doc """
@@ -87,7 +87,7 @@ defmodule Acl.Acl_context do
 
   """
   def delete_role(%Role{} = role) do
-    Repo.delete(role)
+    Repo.repo().delete(role)
   end
 
   @doc """
@@ -115,7 +115,7 @@ defmodule Acl.Acl_context do
 
   """
   def list_acl_res do
-    Repo.all(Res)
+    Repo.repo().all(Res)
   end
 
   @doc """
@@ -132,8 +132,8 @@ defmodule Acl.Acl_context do
       ** (Ecto.NoResultsError)
 
   """
-  def get_res!(id), do: Repo.get!(Res, id)
-  def get_res(res), do: Repo.get_by(Res, [res: res])
+  def get_res!(id), do: Repo.repo().get!(Res, id)
+  def get_res(res), do: Repo.repo().get_by(Res, [res: res])
 
   @doc """
   Creates a res.
@@ -150,7 +150,7 @@ defmodule Acl.Acl_context do
   def create_res(attrs \\ %{}) do
     %Res{}
     |> Res.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.repo().insert()
   end
 
   @doc """
@@ -168,7 +168,7 @@ defmodule Acl.Acl_context do
   def update_res(%Res{} = res, attrs) do
     res
     |> Res.changeset(attrs)
-    |> Repo.update()
+    |> Repo.repo().update()
   end
 
   @doc """
@@ -184,7 +184,7 @@ defmodule Acl.Acl_context do
 
   """
   def delete_res(%Res{} = res) do
-    Repo.delete(res)
+    Repo.repo().delete(res)
   end
 
   @doc """
@@ -212,7 +212,7 @@ defmodule Acl.Acl_context do
 
   """
   def list_acl_rules do
-    Repo.all(Rule)
+    Repo.repo().all(Rule)
   end
 
   @doc """
@@ -229,14 +229,14 @@ defmodule Acl.Acl_context do
       ** (Ecto.NoResultsError)
 
   """
-  def get_rule!(id), do: Repo.get!(Rule, id)
+  def get_rule!(id), do: Repo.repo().get!(Rule, id)
 
 
 
 
 
   def get_rule_by(%{"role" => role, "res" => res, "action" => nil, "permission" => nil})do
-    case Repo.one from r in Rule,
+    case Repo.repo().one from r in Rule,
                   where: r.role == ^role and r.res_id == ^res and is_nil(r.action) and is_nil(r.permission),
                   preload: [
                     :res
@@ -248,7 +248,7 @@ defmodule Acl.Acl_context do
   end
   def get_rule_by(%{"role" => role, "res" => res, "action" => action, "permission" => nil})do
 
-    case Repo.one from r in Rule,
+    case Repo.repo().one from r in Rule,
                   where: r.role == ^role and r.res_id == ^res and r.action == ^action and is_nil(r.permission),
                   preload: [:res]
       do
@@ -259,7 +259,7 @@ defmodule Acl.Acl_context do
   def get_rule_by(%{"role" => role, "res" => res, "permission" => permission, "action" => action})do
     if  is_nil(action)
       do
-      case Repo.one from r in Rule,
+      case Repo.repo().one from r in Rule,
                     where: r.role == ^role and r.res_id == ^res and is_nil(
                       r.action
                            ) and r.permission == ^permission,
@@ -270,7 +270,7 @@ defmodule Acl.Acl_context do
       end
     else
       case Rule
-           |> Repo.get_by([role: role, res_id: res, permission: permission, action: action])
+           |> Repo.repo().get_by([role: role, res_id: res, permission: permission, action: action])
         do
         nil -> {:error, :rule_not_found}
         rule -> rule
@@ -280,23 +280,23 @@ defmodule Acl.Acl_context do
   end
   def get_rule_by(%{"role" => role, "res" => res, "action" => action})do
     case Rule
-         |> Repo.all([role: role, res_id: res, action: action])
-         |> Repo.preload(:res)  do
+         |> Repo.repo().all([role: role, res_id: res, action: action])
+         |> Repo.repo().preload(:res)  do
       nil -> {:error, :rule_not_found}
       [] -> {:error, :rule_not_found}
       rule -> rule
     end
   end
   def get_rule_by(%{"role" => role, "res" => res})do
-    case Repo.all(Rule, [role: role, res_id: res]) do
+    case Repo.repo().all(Rule, [role: role, res_id: res]) do
       nil -> {:error, :rule_not_found}
       rule -> rule
     end
   end
   def get_rule_by(role) do
     case Role
-         |> Repo.get(role)
-         |> Repo.preload([{:rules, :res}])
+         |> Repo.repo().get(role)
+         |> Repo.repo().preload([{:rules, :res}])
       do
       nil -> {:error, :rule_not_found}
       records -> records
@@ -320,7 +320,7 @@ defmodule Acl.Acl_context do
   def create_rule(attrs \\ %{}) do
     %Rule{}
     |> Rule.changeset(attrs, attrs["res"])
-    |> Repo.insert()
+    |> Repo.repo().insert()
   end
 
   @doc """
@@ -340,7 +340,7 @@ defmodule Acl.Acl_context do
          |> Rule.u_changeset(attrs)
     if cs.changes != %{} do
       cs
-      |> Repo.update()
+      |> Repo.repo().update()
     end
 
   end
@@ -358,7 +358,7 @@ defmodule Acl.Acl_context do
 
   """
   def delete_rule(%Rule{} = rule) do
-    Repo.delete(rule)
+    Repo.repo().delete(rule)
   end
 
   @doc """

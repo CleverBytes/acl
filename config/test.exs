@@ -1,18 +1,27 @@
-use Mix.Config
+import Config
+
+# Configure your database
+#
+# The MIX_TEST_PARTITION environment variable can be used
+# to provide built-in test partitioning in CI environment.
+# Run `mix help test` for more information.
+config :acl, Acl.Repo,
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  database: "acl_test#{System.get_env("MIX_TEST_PARTITION")}",
+  pool: Ecto.Adapters.SQL.Sandbox,
+  pool_size: 10
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :acl, AclWeb.Endpoint,
-  http: [port: 4002],
+  http: [ip: {127, 0, 0, 1}, port: 4002],
+  secret_key_base: "lIuummUM7M7RsK5QgnfQmpPIn8yQ5jW7fZYQqL8a8IV0BZ7mySmnsASbmqxitOy5",
   server: false
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
-# Configure your database
-config :acl, Acl.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "acl_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+# Initialize plugs at runtime for faster test compilation
+config :phoenix, :plug_init_mode, :runtime

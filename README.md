@@ -6,18 +6,17 @@ This ACL is designed to be used in a phoenix (Elixir) project and handles all yo
  
  
  
-      {:ecto_sql, "\~> 3.0"}  
-      {:jason, "\~> 1.0"}
+      {:ecto_sql, "\~> 3.10"}  
+      {:jason, "\~> 1.2"}
       {:plug_cowboy, "\~> 1.0.0"}
       {:ex_doc, ">= 0.0.0", only: :dev}
-      {:phoenix, "\~> 1.3.0"}
-      {:phoenix_pubsub, "\~> 1.0"}
-      {:phoenix_ecto, "\~> 3.2"}
+      {:phoenix, "\~> 1.7.10"}
+      {:phoenix_ecto, "\~> 4.4"}
       {:postgrex, ">= 0.0.0"}
-      {:phoenix_html, "\~> 2.10"}
-      {:phoenix_live_reload, "\~> 1.0", only: :dev}
-      {:gettext, "\~> 0.11"}
-      {:cowboy, "\~> 1.0"}
+      {:phoenix_html, "\~> 3.3"}
+      {:phoenix_live_reload, "\~> 1.2", only: :dev}
+      {:gettext, "\~> 0.20"}
+      {:plug_cowboy, "~> 2.5"}
       
 
 
@@ -27,7 +26,7 @@ To add ACL to your project simply add to your projects dependencies
 
 
 
-    {:acl, "~> 0.4.0"}
+    {:acl, "~> 0.5.0"}
 
 
 and run "mix deps.get"
@@ -40,82 +39,17 @@ and also add configuration for :acl in your config file
 you also need to run migrations for acl, which creates tables required for the acl, you can find migrations inside acl folder in your deps directory.
 
 
-## ACL guide
+  * Run `mix setup` to install and setup dependencies
+  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-it has three essential Components Roles,Resources (handles as res), and Rules.
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-### Roles
+Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-Roles (users/user groups) are entities you want to give or deny access to. 
-you can add a new role by
+## Learn more
 
-
-
-    Acl.addRole(%{"role" => "role", "parent" => "parent"})
-
-
-
-in roles parent is optional and you may choose to provide it or not.
-
-### Res
-
-Res  are entities you want to give or deny access for. they can be anything real or arbitrary.
-
-you can add a new res by
-
-
-
-    Acl.addRes(%{"res" => "res", "parent" => "parent"})
-
-
-
-in res parent is optional and you may choose to provide it or not.
-
-### Rules
-
-Rules are definition for your set of permissions. you can add rule by
-
-
-
-    addRule(role, res,  permission \\1, action \\nil ,condition \\1 )
-
-
-and you can check if a role or permission exists by 
-
-
-
-    hasAccess(role, permission \\"read", res \\nil, action \\nil)
-
-
-
-valid inputs for permission are "POST","GET","PUT" ,"DELETE","read","write","delete","edit". permissions have downward flow. i.e if you have defined permissions for a higher operation it automatically assigns them permissions for lower operations.
-like "edit" grants permissions for all operations. their hierarchy is in this order
-
-
-
-    "read" < "write" < "delete" < "edit"
-    "GET" < "POST" < "DELETE" < "PUT"
-
-
-
-you can use actions argument to define actions for your resources or not use them at all and skip sending them in arguments. like i have a resource as maps and i can define actions like display/resize etc. now actions can be pages in a web application or can be tables for an api or can be functions inside a controller. you can be as creative as you wish
-
-and last argument condition is to define permission levels (0,1,2,3), and they map in this order.
-
-
-
-    0 -> "none"
-    1 -> "self"
-    2 -> "related"
-    3 -> "all"
-      
-
-
-you can add a res with empty string and it will be used as super resource. granting permission to that resource is equivalent to making a super admin and any role who have access to this resource will have all permissions.
-
-
-##### for issues pls open an issue
-
-
-
-
+  * Official website: https://www.phoenixframework.org/
+  * Guides: https://hexdocs.pm/phoenix/overview.html
+  * Docs: https://hexdocs.pm/phoenix
+  * Forum: https://elixirforum.com/c/phoenix-forum
+  * Source: https://github.com/phoenixframework/phoenix

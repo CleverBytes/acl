@@ -1,6 +1,4 @@
 defmodule AclWeb.Router do
-  @moduledoc false
-
   use AclWeb, :router
 
   pipeline :api do
@@ -10,7 +8,5 @@ defmodule AclWeb.Router do
   scope "/api", AclWeb do
     pipe_through :api
     get "/", RuleController, :index
-
   end
-
 end

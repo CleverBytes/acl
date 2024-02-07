@@ -1,49 +1,6 @@
-defmodule AclWeb.RuleController do
-  use AclWeb, :controller
-
+defmodule Acl.ACL.RuleService do
   alias Acl.ACL
   alias Acl.ACL.Rule
-
-  action_fallback AclWeb.FallbackController
-
-  def index(conn, _params) do
-    rules = ACL.list_rules()
-    render(conn, :index, rules: rules)
-  end
-
-  def create(conn, %{"rule" => rule_params}) do
-    with {:ok, %Rule{} = rule} <- ACL.create_rule(rule_params) do
-      conn
-      |> put_status(:created)
-      |> render(:show, rule: rule)
-    end
-  end
-
-  def show(conn, %{
-        "role" => role,
-        "resource" => resource,
-        "permission" => permission,
-        "action" => action
-      }) do
-    rule = ACL.get_rule!([role, resource, permission, action])
-    render(conn, :show, rule: rule)
-  end
-
-  def update(conn, %{"id" => id, "rule" => rule_params}) do
-    rule = ACL.get_rule!(id)
-
-    with {:ok, %Rule{} = rule} <- ACL.update_rule(rule, rule_params) do
-      render(conn, :show, rule: rule)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    rule = ACL.get_rule!(id)
-
-    with {:ok, %Rule{}} <- ACL.delete_rule(rule) do
-      send_resp(conn, :no_content, "")
-    end
-  end
 
   def getRule(params) do
     params
@@ -139,7 +96,8 @@ defmodule AclWeb.RuleController do
 
   def addRule(role, res_, permission \\ 1, action \\ nil, condition \\ 1) do
     case ACL.get_resource(res_) do
-      nil -> {:error, :res_unknown}
+      nil ->
+        {:error, :res_unknown}
 
       resource ->
         rule_ = ACL.get_rule_by(%{"role" => role, "resource" => resource.id, "action" => action})

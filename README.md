@@ -29,15 +29,26 @@ To add ACL to your project simply add to your projects dependencies
     {:acl, "~> 0.5.0"}
 
 
-and run "mix deps.get"
-then you need to add :acl to your application
+and run `mix deps.get`
+then you need to add :acl to your application in `mix.exs`
+
+    def application do
+    [
+      extra_applications: [:acl]
+    ]
+    end
+
 and also add configuration for :acl in your config file
     
     config :acl, Acl.Repo,
        repo: MyApp.Repo
     
 you also need to run migrations for acl, which creates tables required for the acl, you can find migrations inside acl folder in your deps directory.
+or update your aliases function in mix.exs
 
+    "ecto.setup": ["ecto.create", "acl.migrate", "ecto.migrate", "run priv/repo/seeds.exs"],
+    "acl.migrate": ["ecto.migrate --migrations-path deps/acl/priv/repo/migrations"],
+    "ecto.migrate": ["ecto.migrate --migrations-path ./"],
 
   * Run `mix setup` to install and setup dependencies
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`

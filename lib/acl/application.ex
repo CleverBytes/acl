@@ -8,7 +8,7 @@ defmodule Acl.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      Acl.Repo,
+#      Acl.Repo,
       {DNSCluster, query: Application.get_env(:acl, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Acl.PubSub}
     ]

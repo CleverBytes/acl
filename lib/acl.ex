@@ -1,195 +1,146 @@
 defmodule Acl do
-  alias AclWeb.RuleController
-  alias AclWeb.RoleController
-  alias AclWeb.ResController
+  @moduledoc """
+  # Acl
 
-@moduledoc """
-# Acl
+  ACL or access control list is a list of permissions attached to a specific object for certain users.
 
-ACL or access control list is a list of permissions attached to a specific object for certain users.
-This ACL is designed to be used in a phoneix (Elixir) project and handles all your permissions managment.
- It requires following depedencies
+  ## ACL guide
 
+  it has three essential Components Roles,Resources (handles as resource), and Rules.
 
+  ### Roles
 
-      {:ecto_sql, "\~> 3.0"}
-      {:jason, "\~> 1.0"}
-      {:plug_cowboy, "\~> 1.0.0"}
-      {:ex_doc, ">= 0.0.0", only: :dev}
-      {:phoenix, "\~> 1.3.0"}
-      {:phoenix_pubsub, "\~> 1.0"}
-      {:phoenix_ecto, "\~> 3.2"}
-      {:postgrex, ">= 0.0.0"}
-      {:phoenix_html, "\~> 2.10"}
-      {:phoenix_live_reload, "\~> 1.0", only: :dev}
-      {:gettext, "\~> 0.11"}
-      {:cowboy, "\~> 1.0"}
+  Roles (users/user groups) are entities you want to give or deny access to.
+  you can add a new role by
 
 
 
-## Installation guide
+      Acl.addRole(%{"role" => "role", "parent" => "parent"})
 
-To add ACL to your project simpley add to your projects depedencies
 
 
+  in roles parent is optional and you may choose to provide it or not.
 
-    {:acl, "~> 0.4.0"}
+  ### Res
 
+  Res  are entities you want to give or deny access for. they can be anything real or arbitrary.
 
-and run "mix deps.get"
-thn you need to add :acl to your application
-and also add configuration for :acl in your config file
+  you can add a new res by
 
-    config :acl, Acl.Repo,
-       repo: MyApp.Repo
 
-you also need to run migrations for acl, which creates tables required for the acl, you can find migrations inside acl folder in your deps directory.
 
+      Acl.addRes(%{"res" => "res", "parent" => "parent"})
 
-## ACL guide
 
-it has three essential Componenets Roles,Resources (handles as res), and Rules.
 
-### Roles
+  in res parent is optional and you may choose to provide it or not.
 
-Roles (users/user groups) are entities you want to give or deny access to.
-you can add a new role by
+  ### Rules
 
+  Rules are definition for your set of permissions. you can add rule by
 
 
-    Acl.addRole(%{"role" => "role", "parent" => "parent"})
 
+      addRule(role, res,  permission \\1, action \\nil ,condition \\1 )
 
 
-in roles parent is optional and you may choose to provide it or not.
+  and you can check if a role or permission exists by
 
-### Res
 
-Res  are entities you want to give or deny access for. they can be anything real or arbitaray.
 
-you can add a new res by
+      hasAccess(role, permission \\"read", res \\nil, action \\nil)
 
 
 
-    Acl.addRes(%{"res" => "res", "parent" => "parent"})
+  valid inputs for permmission are "POST","GET","PUT" ,"DELETE","read","write","delete","edit". permissions have downword flow. i.e if you have defined permissions for a higher operation it automatically assings them permissions for lower operations.
+  like "edit" grants permissions for all operations. their heirarchy is in this order
 
 
 
-in res parent is optional and you may choose to provide it or not.
+      "read" < "write" < "delete" < "edit"
+      "GET" < "POST" < "DELETE" < "PUT"
 
-### Rules
 
-Rules are definition for your set of permissions. you can add rule by
 
+  you can use actions argument to define actions for your resources or not use thema t all and skip sending them in arguments. like i have a resource as maps and i can define actions like display/resize etc. now actions can be pages in a web application or can be tables for an api or can be functions inside a controller. you can be as creative as you wish
 
+  and last argument condition is to define permission levels (0,1,2,3), and they map in this order.
 
-    addRule(role, res,  permission \\1, action \\nil ,condition \\1 )
 
 
-and you can check if a role or permission exists by
+      0 -> "none"
+      1 -> "self"
+      2 -> "related"
+      3 -> "all"
 
 
 
-    hasAccess(role, permission \\"read", res \\nil, action \\nil)
+  you can add a res with empty string and it will be used as super resource. granting permission to that resource is equivalent to making a superadmin and any role who have access to this resource will have all permissions.
+  """
 
+  alias Acl.ACL.RoleService
+  alias Acl.ACL.RuleService
+  alias Acl.ACL.ResourceService
 
-
-valid inputs for permmission are "POST","GET","PUT" ,"DELETE","read","write","delete","edit". permissions have downword flow. i.e if you have defined permissions for a higher operation it automatically assings them permissions for lower operations.
-like "edit" grants permissions for all operations. their heirarchy is in this order
-
-
-
-    "read" < "write" < "delete" < "edit"
-    "GET" < "POST" < "DELETE" < "PUT"
-
-
-
-you can use actions argument to define actions for your resources or not use thema t all and skip sending them in arguments. like i have a resource as maps and i can define actions like display/resize etc. now actions can be pages in a web application or can be tables for an api or can be functions inside a controller. you can be as creative as you wish
-
-and last argument condition is to define permission levels (0,1,2,3), and they map in this order.
-
-
-
-    0 -> "none"
-    1 -> "self"
-    2 -> "related"
-    3 -> "all"
-
-
-
-you can add a res with empity string and it will be used as super resource. granting permission to that resource is equivalent to making a superadmin and any role who have access to this resource will have all permissions.
-
-
-##### for issues pls open an issue
-"""
-
-@doc false
-  def hasAccess(role, permission \\"read", res \\nil, action \\nil) do
-    RuleController.checkRule(role, res, action, permissionTranslate(permission))
-  end
   @doc false
-
-  def addRule( role,res,  permission \\1, action \\nil ,condition \\1 ) do
-
-    RuleController.addRule(role, res,  permission , action , condition )
+  def hasAccess(role, permission \\ "read", res \\ nil, action \\ nil) do
+    RuleService.checkRule(role, res, action, permissionTranslate(permission))
   end
+
   @doc false
-
-  def getRule( params) do
-
-    RuleController.getRule(params)
+  def addRule(role, res, permission \\ 1, action \\ nil, condition \\ 1) do
+    RuleService.addRule(role, res, permission, action, condition)
   end
+
   @doc false
-
-  def addRole( params) do
-
-    RoleController.create(params)
+  def getRule(params) do
+    RuleService.getRule(params)
   end
+
   @doc false
-
-  def addRes( params) do
-
-    ResController.create(params)
+  def addRole(params) do
+    RoleService.create(params)
   end
+
   @doc false
+  def addRes(params) do
+    ResourceService.create(params)
+  end
 
-  def allowAccess( %{__struct__: _} = rule) do
-
-    case RuleController.allowRule(rule) do
+  @doc false
+  def allowAccess(%{__struct__: _} = rule) do
+    case RuleService.allowRule(rule) do
       true -> {:ok, :allowed}
       false -> {:error, "rule not found, perhaps create new rule?"}
     end
   end
+
   @doc false
-
-  def allowAccess(conn, params) do
-
-    case RuleController.allowRule(params) do
+  def allowAccess(params) do
+    case RuleService.allowRule(params) do
       true -> {:ok, :allowed}
       false -> {:error, "rule not found, perhaps create new rule?"}
     end
   end
+
   @doc false
-
-  def denyAccess(conn, %{__struct__: _}  = rule) do
-
-    case RuleController.denyRule(rule) do
+  def denyAccess(%{__struct__: _} = rule) do
+    case RuleService.denyRule(rule) do
       true -> {:ok, :denied}
       false -> {:error, "rule not found, perhaps create new rule?"}
     end
   end
+
   @doc false
-
-  def denyAccess(conn, params) do
-
-    case RuleController.denyRule(params) do
+  def denyAccess(params) do
+    case RuleService.denyRule(params) do
       true -> {:ok, :denied}
       false -> {:error, "rule not found, perhaps create new rule?"}
     end
   end
-  @doc false
 
-  defp permissionTranslate (permission) do
+  @doc false
+  defp permissionTranslate(permission) do
     case permission do
       "POST" -> "write"
       "GET" -> "read"
@@ -201,7 +152,5 @@ you can add a res with empity string and it will be used as super resource. gran
       "delete" -> "delete"
       _ -> nil
     end
-
   end
-
 end

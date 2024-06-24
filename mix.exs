@@ -7,9 +7,7 @@ defmodule Acl.MixProject do
       version: "0.5.0",
       elixir: "~> 1.14",
       maintainers: ["Azwar Habib"],
-      licenses: ["Apache 2.0"],
       description: "Acl implementation.",
-      links: %{"GitHub" => "https://github.com/CleverBytes/acl"},
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -34,7 +32,7 @@ defmodule Acl.MixProject do
     [
       files: ["lib", "mix.exs", "README.md"],
       maintainers: ["Azwar Habib"],
-      licenses: ["Apache 2.0"],
+      licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/CleverBytes/acl"},
       description: "Acl implementation."
     ]
@@ -62,6 +60,7 @@ defmodule Acl.MixProject do
       {:phoenix, "~> 1.7.10"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.10"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},

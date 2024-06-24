@@ -6,9 +6,12 @@ defmodule Acl.Repo do
 #        adapter: Ecto.Adapters.Postgres
 
   def repo do
-    :acl
-    |> Application.fetch_env!(Acl.Repo)
-    |> Keyword.fetch!(:repo)
+    case Application.fetch_env(:acl, Acl.Repo) do
+      {:ok, config} ->
+        Keyword.fetch!(config, :repo)
+      :error ->
+        {:error, "Acl.Repo not found in configuration"}
+    end
   end
 
   @doc """

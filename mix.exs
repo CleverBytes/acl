@@ -18,7 +18,7 @@ defmodule Acl.MixProject do
       source_url: "https://github.com/CleverBytes/acl",
       homepage_url: "https://github.com/CleverBytes/acl",
       # The main page in the docs
-      docs: [main: "Acl", extras: ["README.md"], api_reference: false]
+      docs: docs()
     ]
   end
 
@@ -35,6 +35,17 @@ defmodule Acl.MixProject do
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/CleverBytes/acl"},
       description: "Acl implementation."
+    ]
+  end
+
+  defp docs do
+    [
+      extras: ["README.md"],
+      main: "Acl",
+      source_url: "https://github.com/CleverBytes/acl",
+      homepage_url: "https://github.com/CleverBytes/acl",
+      formatters: ["html"],
+      api_reference: false
     ]
   end
 

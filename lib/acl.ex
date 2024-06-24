@@ -19,7 +19,7 @@ defmodule Acl do
 
 
 
-  in roles parent is optional and you may choose to provide it or not.
+  in roles parent is optional, and you may choose to provide it or not.
 
   ### Res
 
@@ -52,8 +52,8 @@ defmodule Acl do
 
 
 
-  valid inputs for permmission are "POST","GET","PUT" ,"DELETE","read","write","delete","edit". permissions have downword flow. i.e if you have defined permissions for a higher operation it automatically assings them permissions for lower operations.
-  like "edit" grants permissions for all operations. their heirarchy is in this order
+  valid inputs for permission are "POST","GET","PUT" ,"DELETE","read","write","delete","edit". permissions have downward flow. i.e if you have defined permissions for a higher operation it automatically assigns them permissions for lower operations.
+  like "edit" grants permissions for all operations. their hierarchy is in this order
 
 
 
